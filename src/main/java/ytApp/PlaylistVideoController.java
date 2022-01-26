@@ -204,7 +204,7 @@ public class PlaylistVideoController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Video> insertVideoToplaylist(@PathVariable("id") Integer id,@PathVariable ("idv") Integer idv) throws Exception {
+    public ResponseEntity<Playlist> insertVideoToplaylist(@PathVariable("id") Integer id,@PathVariable ("idv") Integer idv) throws Exception {
 
         Video oneVideo = this.playlistVideoService.findOneVideo(idv);
 
@@ -212,10 +212,10 @@ public class PlaylistVideoController {
 
 
         playlist.getVideos().add(oneVideo);
-        this.playlistVideoService.updatePlaylist(playlist);
+        Playlist updatedPlaylist =this.playlistVideoService.updatePlaylist(playlist);
 
 
-        return new ResponseEntity<Video>(oneVideo, HttpStatus.OK);
+        return new ResponseEntity<Playlist>(updatedPlaylist, HttpStatus.OK);
 
     }
 
@@ -232,7 +232,7 @@ public class PlaylistVideoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        oneVideo.setCounter(video.getCounter());
+
         oneVideo.setName(video.getName());
         Video updateVideo = this.playlistVideoService.updateVideo(oneVideo);
 

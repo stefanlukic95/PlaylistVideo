@@ -16,7 +16,9 @@ public class Playlist {
     @OneToOne
     public User user;
     @ElementCollection
-    @OneToMany
+    @ManyToMany
+    @MapsId("videosId")
+    @JoinColumn(name = "playlist_id")
     public List<Video> videos;
 
 
