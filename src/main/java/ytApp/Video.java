@@ -1,6 +1,7 @@
 package ytApp;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name  = "Video")
@@ -12,15 +13,19 @@ public class Video {
     public Integer id;
     public String name;
     public Integer counter;
+    @ElementCollection
+    @ManyToMany
+    public List<Playlist> playlist;
 
 
     public Video(){
     }
 
-    public Video(Integer id, String name, Integer counter) {
+    public Video(Integer id, String name, Integer counter,List<Playlist> playlist) {
         this.id = id;
         this.name = name;
         this.counter = this.counter;
+        this.playlist  = playlist;
     }
 
     public Integer getId() {
@@ -45,5 +50,13 @@ public class Video {
 
     public void setCounter(Integer counter) {
         this.counter = counter;
+    }
+
+    public List<Playlist> getPlaylist() {
+        return playlist;
+    }
+
+    public void setPlaylist(List<Playlist> playlist) {
+        this.playlist = playlist;
     }
 }

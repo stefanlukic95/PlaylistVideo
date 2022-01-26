@@ -47,24 +47,24 @@ public class PlaylistVideoController {
         return new ResponseEntity<Playlist>(playlist, HttpStatus.OK);
 
     }
-
-    @RequestMapping(
-            value="/videoSortedList/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<Playlist> getSortedVideoList(@PathVariable("id") Integer id) {
-
-        Playlist playlist = this.playlistVideoService.findOnePlaylist(id);
-
-
-
-        if(playlist == null){
-            return new ResponseEntity<Playlist>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<Playlist>(playlist, HttpStatus.OK);
-
-    }
+//
+//    @RequestMapping(
+//            value="/videoSortedList/{id}",
+//            method = RequestMethod.GET,
+//            produces = MediaType.APPLICATION_JSON_VALUE
+//    )
+//    public ResponseEntity<Playlist> getSortedVideoList(@PathVariable("id") Integer id) {
+//
+//        Playlist playlist = this.playlistVideoService.findOnePlaylist(id);
+//
+//
+//
+//        if(playlist == null){
+//            return new ResponseEntity<Playlist>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<Playlist>(playlist, HttpStatus.OK);
+//
+//    }
 
 
     @RequestMapping(
@@ -199,15 +199,16 @@ public class PlaylistVideoController {
 
 
     @RequestMapping(
-            value = "/postVideoToPlaylist/{id}",
-            method = RequestMethod.POST,
+            value = "/insertVideoToPlaylist/{id}/{idv}",
+            method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Video> insertVideoToplaylist(@RequestBody Video video,@PathVariable("id") Integer id) throws Exception {
+    public ResponseEntity<Video> insertVideoToplaylist(@PathVariable("id") Integer id,@PathVariable ("idv") Integer idv) throws Exception {
 
+        Video videoo = this.playlistVideoService.findOneVideo(idv);
+        Video insertedVideo = playlistVideoService.updateVideo(videoo);
 
-        Video insertedVideo = playlistVideoService.updateVideo(video);
         Playlist playlist = this.playlistVideoService.findOnePlaylist(id);
 
         playlist.getVideos().add(insertedVideo);

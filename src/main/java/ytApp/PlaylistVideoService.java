@@ -67,7 +67,6 @@ public class PlaylistVideoService {
         return playlistRepository.save(p);
     }
     public Video updateVideo(Video v)throws Exception{
-
         return videoRepository.save(v);
     }
 
