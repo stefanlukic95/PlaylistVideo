@@ -176,16 +176,16 @@ public class PlaylistVideoController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Playlist> updatePlaylist(@PathVariable("id") Integer id, @RequestBody Playlist playlist) throws Exception {
-        Playlist playlistt = this.playlistVideoService.findOnePlaylist(id);
+        Playlist onePlaylist = this.playlistVideoService.findOnePlaylist(id);
 
-        if (playlistt == null) {
+        if (onePlaylist == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        playlistt.setVideos(playlist.getVideos());
+        onePlaylist.setVideos(playlist.getVideos());
 
 
-        Playlist updatePLaylist = this.playlistVideoService.updatePlaylist(playlistt);
+        Playlist updatePLaylist = this.playlistVideoService.updatePlaylist(onePlaylist);
 
 
         if (updatePLaylist == null) {
@@ -206,17 +206,16 @@ public class PlaylistVideoController {
     )
     public ResponseEntity<Video> insertVideoToplaylist(@PathVariable("id") Integer id,@PathVariable ("idv") Integer idv) throws Exception {
 
-        Video videoo = this.playlistVideoService.findOneVideo(idv);
-        Video insertedVideo = playlistVideoService.updateVideo(videoo);
+        Video oneVideo = this.playlistVideoService.findOneVideo(idv);
 
         Playlist playlist = this.playlistVideoService.findOnePlaylist(id);
 
-        playlist.getVideos().add(insertedVideo);
 
+        playlist.getVideos().add(oneVideo);
         this.playlistVideoService.updatePlaylist(playlist);
 
 
-        return new ResponseEntity<Video>(insertedVideo, HttpStatus.OK);
+        return new ResponseEntity<Video>(oneVideo, HttpStatus.OK);
 
     }
 
@@ -227,15 +226,15 @@ public class PlaylistVideoController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Video> updateVideo(@PathVariable("id") Integer id, @RequestBody Video video) throws Exception {
-        Video videoo = this.playlistVideoService.findOneVideo(id);
+        Video oneVideo = this.playlistVideoService.findOneVideo(id);
 
-        if (videoo == null) {
+        if (oneVideo == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        videoo.setCounter(video.getCounter());
-        videoo.setName(video.getName());
-        Video updateVideo = this.playlistVideoService.updateVideo(videoo);
+        oneVideo.setCounter(video.getCounter());
+        oneVideo.setName(video.getName());
+        Video updateVideo = this.playlistVideoService.updateVideo(oneVideo);
 
 
         if (updateVideo == null) {
