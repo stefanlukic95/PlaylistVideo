@@ -199,16 +199,17 @@ public class PlaylistVideoController {
 
 
     @RequestMapping(
-            value = "/insertVideoToPlaylist/{id}/{idv}",
-            method = RequestMethod.PUT,
+            value = "/insertVideoToPlaylist/{id}/{video_id}",
+            method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Playlist> insertVideoToplaylist(@PathVariable("id") Integer id,@PathVariable ("idv") Integer idv) throws Exception {
+    public ResponseEntity<Playlist> insertVideoToplaylist(@PathVariable("id") Integer id,@PathVariable ("video_id") Integer idv) throws Exception {
 
-        Video oneVideo = this.playlistVideoService.findOneVideo(idv);
 
         Playlist playlist = this.playlistVideoService.findOnePlaylist(id);
+        Video oneVideo = this.playlistVideoService.findOneVideo(idv);
+
 
 
         playlist.getVideos().add(oneVideo);

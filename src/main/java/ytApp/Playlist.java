@@ -17,8 +17,8 @@ public class Playlist {
     public User user;
     @ElementCollection
     @ManyToMany
-    @MapsId("videosId")
-    @JoinColumn(name = "playlist_id")
+    @MapsId("listId")
+    @JoinColumn(name = "list_id")
     public List<Video> videos;
 
 
