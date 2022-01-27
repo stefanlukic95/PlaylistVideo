@@ -1,6 +1,9 @@
 package ytApp;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,18 +18,16 @@ public class Playlist {
     @ElementCollection
     @OneToOne
     public User user;
-    @ElementCollection
-    @ManyToMany
-    @MapsId("listId")
-    @JoinColumn(name = "list_id")
-    public List<Video> videos;
+    @OneToMany(mappedBy = "playlist",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    public List<PlayListVideo> videos;
 
 
     public Playlist(){
 
     }
 
-    public Playlist(Integer id, String name, User user, List<Video> videos) {
+    public Playlist(Integer id, String name, User user, List<PlayListVideo> videos) {
         this.id = id;
         this.name = name;
         this.user = user;
@@ -58,12 +59,23 @@ public class Playlist {
         this.user = user;
     }
 
-    public List<Video> getVideos() {
+    public List<PlayListVideo> getVideos() {
         return videos;
     }
 
-    public void setVideos(List<Video> videos) {
+    public void setVideos(List<PlayListVideo> videos) {
         this.videos = videos;
+    }
+
+
+    public void addVideo(PlayListVideo video){
+        if(this.videos ==null){
+            this.videos = new ArrayList<>();
+        }
+        this.videos.add(video);
+    }
+    public int getVideoCount(){
+        return videos.size();
     }
 
 

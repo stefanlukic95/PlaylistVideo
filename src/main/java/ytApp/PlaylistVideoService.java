@@ -3,6 +3,7 @@ package ytApp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -17,13 +18,18 @@ public class PlaylistVideoService {
     @Autowired
     private VideoRepository videoRepository;
 
+    @Autowired
+    private PlayListVideoRepository playListVideoRepository;
 
     public List<Video> findAllVideos() {
         return videoRepository.findAll();
     }
 
     public Playlist findOnePlaylist(Integer id) {
-        return playlistRepository.findById(id).orElse(null);
+         Playlist response = playlistRepository.findById(id).orElse(null);
+         response.getVideos().sort(Comparator.comparing(PlayListVideo::getOrder));
+
+         return response;
     }
 
     public List<Playlist> findAllPlaylists() {
@@ -66,8 +72,24 @@ public class PlaylistVideoService {
 
         return playlistRepository.save(p);
     }
-    public Video updateVideo(Video v)throws Exception{
+    public Video updateVideo(Video v)throws Exception {
         return videoRepository.save(v);
+    }
+        public Playlist insertVideoToPlayList(Integer videoId, Integer playlistId ) throws Exception{
+
+        Playlist playlist = findOnePlaylist(playlistId);
+        Video oneVideo = findOneVideo(videoId);
+
+
+        PlayListVideo playListVideo = new PlayListVideo();
+        playListVideo.setPlaylist(playlist);
+        playListVideo.setVideo(oneVideo);
+        playListVideo.setOrder(playlist.getVideoCount() +1);
+        playlist.addVideo(playListVideo);
+
+
+        return updatePlaylist(playlist);
+
     }
 
 

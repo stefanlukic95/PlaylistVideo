@@ -12,19 +12,14 @@ public class Video {
     @Column(name = "id")
     public Integer id;
     public String name;
-    @ElementCollection
-    @ManyToMany
-    @MapsId("videoId")
-    @JoinColumn(name = "video_id")
-    public List<Playlist> playlists;
 
     public Video() {
     }
 
-    public Video(Integer id, String name,List<Playlist> playlists) {
+    public Video(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.playlists=playlists;
+
 
 
     }
@@ -45,11 +40,5 @@ public class Video {
         this.name = name;
     }
 
-    public List<Playlist> getPlaylists() {
-        return playlists;
-    }
 
-    public void setPlaylists(List<Playlist> playlists) {
-        this.playlists = playlists;
-    }
 }

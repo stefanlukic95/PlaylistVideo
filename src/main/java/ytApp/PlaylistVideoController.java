@@ -207,15 +207,7 @@ public class PlaylistVideoController {
     public ResponseEntity<Playlist> insertVideoToplaylist(@PathVariable("id") Integer id,@PathVariable ("video_id") Integer idv) throws Exception {
 
 
-        Playlist playlist = this.playlistVideoService.findOnePlaylist(id);
-        Video oneVideo = this.playlistVideoService.findOneVideo(idv);
-
-
-
-        playlist.getVideos().add(oneVideo);
-        Playlist updatedPlaylist =this.playlistVideoService.updatePlaylist(playlist);
-
-
+        Playlist updatedPlaylist =this.playlistVideoService.insertVideoToPlayList(idv,id);
         return new ResponseEntity<Playlist>(updatedPlaylist, HttpStatus.OK);
 
     }
