@@ -31,14 +31,15 @@ public class PlaylistVideoController {
         return new ResponseEntity<List<Video>>(videos, HttpStatus.OK);
     }
 
+    //Ordered playlist
     @RequestMapping(
-            value="/playlist/{id}",
+            value="/orderedPlaylist/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Playlist> getPlaylistById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Playlist> getOrderedPlaylist(@PathVariable("id") Integer id) {
 
-        Playlist playlist = this.playlistVideoService.findOnePlaylist(id);
+        Playlist playlist = this.playlistVideoService.getOrderedPlaylist(id);
 
 
         if(playlist == null){
@@ -47,25 +48,6 @@ public class PlaylistVideoController {
         return new ResponseEntity<Playlist>(playlist, HttpStatus.OK);
 
     }
-//
-//    @RequestMapping(
-//            value="/videoSortedList/{id}",
-//            method = RequestMethod.GET,
-//            produces = MediaType.APPLICATION_JSON_VALUE
-//    )
-//    public ResponseEntity<Playlist> getSortedVideoList(@PathVariable("id") Integer id) {
-//
-//        Playlist playlist = this.playlistVideoService.findOnePlaylist(id);
-//
-//
-//
-//        if(playlist == null){
-//            return new ResponseEntity<Playlist>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<Playlist>(playlist, HttpStatus.OK);
-//
-//    }
-
 
     @RequestMapping(
             value="/video/{id}",
@@ -176,7 +158,7 @@ public class PlaylistVideoController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Playlist> updatePlaylist(@PathVariable("id") Integer id, @RequestBody Playlist playlist) throws Exception {
-        Playlist onePlaylist = this.playlistVideoService.findOnePlaylist(id);
+        Playlist onePlaylist = this.playlistVideoService.getOrderedPlaylist(id);
 
         if (onePlaylist == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -208,6 +190,20 @@ public class PlaylistVideoController {
 
 
         Playlist updatedPlaylist =this.playlistVideoService.insertVideoToPlayList(idv,id);
+        return new ResponseEntity<Playlist>(updatedPlaylist, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(
+            value = "/removeVideoFromPlaylist/{id}/{video_id}",
+            method = RequestMethod.DELETE
+    )
+    public ResponseEntity<Playlist> removVideoFromPlaylist(@PathVariable("id") Integer id,@PathVariable ("video_id") Integer idv) throws Exception {
+
+        this.playlistVideoService.deletePlayListVideo(id);
+        Playlist playlist = this.playlistVideoService.getOrderedPlaylist(id);
+
+        Playlist updatedPlaylist =this.playlistVideoService.updatePlaylist(playlist);
         return new ResponseEntity<Playlist>(updatedPlaylist, HttpStatus.OK);
 
     }

@@ -25,11 +25,21 @@ public class PlaylistVideoService {
         return videoRepository.findAll();
     }
 
-    public Playlist findOnePlaylist(Integer id) {
+    public Playlist getOrderedPlaylist(Integer id) {
          Playlist response = playlistRepository.findById(id).orElse(null);
          response.getVideos().sort(Comparator.comparing(PlayListVideo::getOrder));
 
          return response;
+    }
+
+    public PlayListVideo changePlaylistOrder(Integer id,PlayListVideo playListVideo) {
+        PlayListVideo playlistToChange = playListVideoRepository.findById(id).orElse(null);
+
+        playlistToChange.setOrder(playListVideo.getOrder());
+
+
+
+        return playlistToChange;
     }
 
     public List<Playlist> findAllPlaylists() {
@@ -68,6 +78,10 @@ public class PlaylistVideoService {
     public void deleteVideo(Integer id) {
         this.videoRepository.deleteById(id);}
 
+
+    public void deletePlayListVideo(Integer id) {
+        this.playListVideoRepository.deleteById(id);}
+
      public Playlist updatePlaylist(Playlist p)throws Exception{
 
         return playlistRepository.save(p);
@@ -77,7 +91,7 @@ public class PlaylistVideoService {
     }
         public Playlist insertVideoToPlayList(Integer videoId, Integer playlistId ) throws Exception{
 
-        Playlist playlist = findOnePlaylist(playlistId);
+        Playlist playlist = getOrderedPlaylist(playlistId);
         Video oneVideo = findOneVideo(videoId);
 
 
